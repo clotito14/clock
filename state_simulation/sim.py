@@ -24,9 +24,9 @@ Notes:
     - Feedback or suggestions are welcome!
 """
 
+# TODO: Fix the logic! Overflows are not being properly handled...
+
 import time 
-
-
 
 # create binary digit for hours, minutes, seconds
 am_pm_toggle = 0
@@ -55,7 +55,7 @@ def update_time(hh, mm, ss, am_pm_toggle):
     # if 1 minutes place overflows to 10, reset MM[0] to 0,
     # then increment 10 minutes place
     elif (mm[s0] == 0b1010):
-        mm[s0] == 0b0000
+        mm[s0] = 0b0000
         mm[s1] += 0b0001
     # if 10 minutes place overflows to 6, reset MM[0,1] to 0,
     # then increment 1 hours place 
@@ -74,7 +74,7 @@ def update_time(hh, mm, ss, am_pm_toggle):
         hh[s0] = 0
         hh[s1] = 0
         # if this happens, AM -> PM or PM -> AM
-        ampm_toggle = ~am_pm_toggle
+        am_pm_toggle = ~am_pm_toggle
     
 
     return hh, mm, ss, am_pm_toggle
@@ -86,10 +86,10 @@ def print_time(hh, mm, ss, am_pm_toggle):
     suffix = "AM" if ~am_pm_toggle else "PM"
 
     print(f'{hh}:{mm}:{ss} ', suffix)
-    time.sleep(0.05)
+    time.sleep(0.001)
     hh, mm, ss, am_pm_toggle = update_time(hh, mm, ss, am_pm_toggle)
-    print_time(hh, mm, ss, am_pm_toggle)
-
 
 # start clock
-print_time(hh, mm, ss, am_pm_toggle)
+
+while(True):
+    print_time(hh, mm, ss, am_pm_toggle)
